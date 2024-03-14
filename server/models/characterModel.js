@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+const { generateProficienciesSchema } = require("./schemaUtils");
 
 const characterSchema = new Schema({
   user_id: {
@@ -10,18 +11,82 @@ const characterSchema = new Schema({
   name: String,
   surname: String,
   race: {
-    type: String,
-    required: [true, "A character must belong to a race."],
+    name: {
+      type: String,
+      required: [true, "A character must belong to a race."],
+    },
+    raceAbilityScoreIncreases: {
+      strength: Number,
+      dexterity: Number,
+      constitution: Number,
+      intelligence: Number,
+      wisdom: Number,
+      charisma: Number,
+    },
+    age: String,
+    size: String,
+    speed: Number,
+    languages: [String],
+    // racialTraits: [
+    //   {
+    //     traitName: String,
+    //     traitDescription: String,
+    //   },
+    // ],
+    isCustomRace: {
+      type: Boolean,
+    },
   },
   isCustomRace: {
     type: Boolean,
   },
   characterClass: {
-    type: String,
-    required: [true, "A character must have a class."],
+    name: {
+      type: String,
+      required: [true, "A character must have a class."],
+    },
+    hitDice: String,
+    primaryAbility: {
+      type: String,
+      enum: [
+        "Strength",
+        "Dexterity",
+        "Constitution",
+        "Intelligence",
+        "Wisdom",
+        "Charisma",
+      ],
+    },
+    savingThrowProficiencies: [String],
+    armorProficiencies: [String],
+    weaponProficiencies: [String],
+    toolProficiencies: [String],
+    // classFeatures: [
+    //   {
+    //     featureName: String,
+    //     featureDescription: String,
+    //   },
+    // ],
+    isCustomClass: {
+      type: Boolean,
+    },
   },
-  isCustomClass: {
-    type: Boolean,
+  background: {
+    name: String,
+    equipment: [String],
+    languages: [String],
+    skillProficiencies: [String],
+    toolProficiencies: [String],
+    // backgroundFeatures: [
+    //   {
+    //     featureName: String,
+    //     featureDescription: String,
+    //   },
+    // ],
+    personalityTraits: String,
+    ideals: String,
+    bonds: String,
+    flaws: String,
   },
   stats: {
     level: {
@@ -30,7 +95,6 @@ const characterSchema = new Schema({
     },
     armorClass: Number,
     initiativeBonus: Number,
-    speed: Number,
     proficiencyBonus: Number,
     hitPointMaximum: Number,
     currentHitPoints: Number,
@@ -40,7 +104,7 @@ const characterSchema = new Schema({
     spellSaveDC: Number,
     spellAttackBonus: Number,
     abilityScore: {
-      Strenght: Number,
+      Strength: Number,
       Dexterity: Number,
       Constitution: Number,
       Intelligence: Number,
@@ -48,7 +112,7 @@ const characterSchema = new Schema({
       Charisma: Number,
     },
     abilityModifier: {
-      Strenght: Number,
+      Strength: Number,
       Dexterity: Number,
       Constitution: Number,
       Intelligence: Number,
@@ -57,26 +121,7 @@ const characterSchema = new Schema({
     },
   },
   proficiencyBonus: Number,
-  proficiencies: {
-    acrobatics: Boolean,
-    animalHandling: Boolean,
-    arcana: Boolean,
-    athletics: Boolean,
-    deception: Boolean,
-    history: Boolean,
-    insight: Boolean,
-    intimidation: Boolean,
-    investigation: Boolean,
-    medicine: Boolean,
-    nature: Boolean,
-    perception: Boolean,
-    performance: Boolean,
-    persuasion: Boolean,
-    religion: Boolean,
-    sleightOfHand: Boolean,
-    stealth: Boolean,
-    survival: Boolean,
-  },
+  proficiencies: generateProficienciesSchema(),
   gear: {
     armour: String,
     armourType: {

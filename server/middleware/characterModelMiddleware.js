@@ -14,8 +14,8 @@ characterSchema.pre("save", function (next) {
     "Human",
     "Tiefling",
   ];
-  //sets the isCustomRace field to true if the submitted race doesn't contain one of the predefined races above
-  this.isCustomRace = !predefinedRaces.includes(this.race);
+  //sets the race.isCustomRace field to true if the submitted race doesn't contain one of the predefined races above
+  this.race.isCustomRace = !predefinedRaces.includes(this.race.name);
   next();
 });
 
@@ -34,7 +34,9 @@ characterSchema.pre("save", function (next) {
     "Warlock",
     "Wizard",
   ];
-  this.isCustomClass = !predefinedClasses.includes(this.characterClass);
+  this.characterClass.isCustomClass = !predefinedClasses.includes(
+    this.characterClass.name
+  );
   next();
 });
 
@@ -45,6 +47,11 @@ characterSchema.pre("save", function (next) {
   for (let ability in character.stats.abilityScore) {
     if (character.stats.abilityScore[ability] == null) {
       character.stats.abilityScore[ability] = rollDice();
+    }
+    // Adds the racial ability score increases to the character ability scores
+    if (character.race.abilityScoreIncreases) {
+      character.stats.abilityScore[ability] +=
+        character.race.abilityScoreIncreases[ability] || 0;
     }
   }
 
@@ -59,11 +66,11 @@ characterSchema.pre("save", function (next) {
   character.proficiencyBonus = calculateProficiencyBonus(character.stats.level);
 
   // calculate passive wisdom
-  character.stats.passiveWisdom = 10 + character.abilityModifier.Wisdom;
+  character.stats.passiveWisdom = 10 + character.stats.abilityModifier.Wisdom;
 
   // add perception proficiency bonus if character has proficiency in perception
   if (character.proficiencies.perception) {
-    character.passiveWisdom += character.stats.proficiencyBonus;
+    character.stats.passiveWisdom += character.stats.proficiencyBonus;
   }
 
   next();
@@ -71,15 +78,11 @@ characterSchema.pre("save", function (next) {
 
 characterSchema.pre("updateOne", function (next) {
   const character = this._update;
-
+  // Calculate character proficiency bonus after every update since it's based on character level
   character.proficiencyBonus = calculateProficiencyBonus(character.stats.level);
   // calculate passive wisdom
   character.passiveWisdom = 10 + character.abilityModifier.Wisdom;
 
-  // add perception proficiency bonus if character has proficiency in perception
-  if (character.proficiencies.perception) {
-    character.passiveWisdom += character.proficiencyBonus;
-  }
   next();
 });
 

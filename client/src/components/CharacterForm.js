@@ -7,8 +7,8 @@ const CharacterForm = () => {
   const { user } = useAuthContext();
 
   const [name, setName] = useState("");
-  const [characterClass, setCharacterClass] = useState("");
-  const [race, setRace] = useState("");
+  const [characterClass, setCharacterClass] = useState({ name: "" });
+  const [race, setRace] = useState({ name: "" });
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -33,8 +33,8 @@ const CharacterForm = () => {
 
     console.log("New Character created.", json);
     setName("");
-    setCharacterClass("");
-    setRace("");
+    setCharacterClass({ name: "" });
+    setRace({ name: "" });
 
     dispatch({ type: "CREATE_CHARACTER", payload: json.doc });
   };
@@ -54,14 +54,14 @@ const CharacterForm = () => {
           <label>Character Class:</label>
           <input
             type="text"
-            onChange={(e) => setCharacterClass(e.target.value)}
-            value={characterClass}
+            value={characterClass.name}
+            onChange={(e) => setCharacterClass({ name: e.target.value })}
           />
           <label>Character Race:</label>
           <input
             type="text"
-            onChange={(e) => setRace(e.target.value)}
-            value={race}
+            value={race.name}
+            onChange={(e) => setRace({ name: e.target.value })}
           />
 
           <button>Create Character</button>
