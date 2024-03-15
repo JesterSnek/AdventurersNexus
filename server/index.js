@@ -16,10 +16,12 @@ app.use((req, res, next) => {
 // importing routes
 const userRoutes = require("./routes/userRoutes");
 const characterRoutes = require("./routes/characterRoutes");
+const backgroundRoutes = require("./routes/backgroundRoutes");
 
 // routes
 app.use("/api/user", userRoutes);
 app.use("/api/character", characterRoutes);
+app.use("/api/background", backgroundRoutes);
 
 // connecting to database on mongo atlas
 mongoose

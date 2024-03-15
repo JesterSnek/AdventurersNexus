@@ -72,7 +72,12 @@ const characterSchema = new Schema({
     },
   },
   background: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Background",
+  },
+  customBackground: {
     name: String,
+    description: String,
     equipment: [String],
     languages: [String],
     skillProficiencies: [String],

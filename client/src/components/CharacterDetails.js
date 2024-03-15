@@ -4,7 +4,7 @@ const CharacterDetails = ({ character }) => {
       <h4>{character.name}</h4>
       <p>
         <strong>Class: </strong>
-        {character.characterClass}
+        {character.characterClass.name}
       </p>
     </div>
   );
