@@ -10,6 +10,7 @@ router.post(
   "/createCharacter",
   requireAuth,
   characterController.setUserId,
+  characterController.detectBackgroundType,
   characterController.createCharacter
 );
 //router.get("/getCharacter/:id", characterController.getCharacter);

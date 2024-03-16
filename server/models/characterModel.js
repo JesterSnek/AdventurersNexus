@@ -72,26 +72,30 @@ const characterSchema = new Schema({
     },
   },
   background: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Background",
-  },
-  customBackground: {
     name: String,
     description: String,
     equipment: [String],
     languages: [String],
     skillProficiencies: [String],
     toolProficiencies: [String],
-    // backgroundFeatures: [
-    //   {
-    //     featureName: String,
-    //     featureDescription: String,
-    //   },
-    // ],
+    feature: {
+      name: {
+        type: String,
+        //required: true,
+      },
+      description: {
+        type: String,
+        //required: true,
+      },
+    },
     personalityTraits: String,
     ideals: String,
     bonds: String,
     flaws: String,
+    isCustom: {
+      type: Boolean,
+      default: false,
+    },
   },
   stats: {
     level: {

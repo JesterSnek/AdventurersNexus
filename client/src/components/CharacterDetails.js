@@ -6,6 +6,10 @@ const CharacterDetails = ({ character }) => {
         <strong>Class: </strong>
         {character.characterClass.name}
       </p>
+      <p>
+        <strong>Background: </strong>
+        {character.background.name}
+      </p>
     </div>
   );
 };

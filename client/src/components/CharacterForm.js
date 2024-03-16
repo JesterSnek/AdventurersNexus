@@ -26,23 +26,6 @@ const CharacterForm = () => {
       return;
     }
 
-    const responseB = await fetch(
-      `/api/backgrounds/${character.background.name}`
-    );
-    const background = await responseB.json();
-
-    if (background) {
-      // If the background exists, set the background field to its ObjectId
-      character.background = background._id;
-      character.customBackground = null;
-    } else {
-      // If the background doesn't exist, set customBackground to the entered details
-      character.customBackground = {
-        name: character.background.name /* other fields */,
-      };
-      character.background = null;
-    }
-
     const response = await fetch("/api/character/createCharacter", {
       method: "POST",
       body: JSON.stringify(character),

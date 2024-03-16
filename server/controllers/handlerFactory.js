@@ -22,7 +22,7 @@ exports.getOne = (Model) =>
 
     res.status(200).json({
       status: "success",
-      doc,
+      ...doc._doc,
     });
   });
 
@@ -32,12 +32,15 @@ exports.getOneByName = (Model) =>
     const doc = await query;
 
     if (!doc) {
-      return next(new AppError("No document found with that name", 404));
+      return res.status(404).json({
+        status: "fail",
+        message: "No document found with that name",
+      });
     }
 
     res.status(200).json({
       status: "success",
-      doc,
+      ...doc._doc,
     });
   });
 
