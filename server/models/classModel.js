@@ -13,7 +13,17 @@ const classSchema = new Schema({
     default: false,
   },
   hit_dice: String,
-  primary_ability: String,
+  primary_ability: {
+    type: String,
+    enum: [
+      "Strength",
+      "Dexterity",
+      "Constitution",
+      "Intelligence",
+      "Wisdom",
+      "Charisma",
+    ],
+  },
   saving_throw_proficiencies: [String],
   armor_proficiencies: [String],
   weapon_proficiencies: [String],

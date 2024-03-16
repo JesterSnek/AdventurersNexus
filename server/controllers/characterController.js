@@ -1,7 +1,9 @@
 const Character = require("../middleware/characterModelMiddleware");
 const Background = require("../middleware/backgroundModelMiddleware");
+const Race = require("../middleware/raceModelMiddleware");
 const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
+const CharacterClassModel = require("../middleware/classModelMiddleware");
 
 exports.createCharacter = factory.createOne(Character);
 exports.getCharacter = factory.getOne(Character);
@@ -24,5 +26,33 @@ exports.detectBackgroundType = catchAsync(async (req, res, next) => {
     background.isCustom = true;
   }
   // Add language logic later
+  next();
+});
+
+exports.detectRaceType = catchAsync(async (req, res, next) => {
+  const { race } = req.body;
+
+  const foundRace = await Race.findOne({ name: race.name });
+
+  if (foundRace) {
+    req.body.race = foundRace;
+  } else {
+    race.isCustomRace = true;
+  }
+  next();
+});
+
+exports.detectCharacterClassType = catchAsync(async (req, res, next) => {
+  const { characterClass } = req.body;
+
+  const foundCharacterClass = await CharacterClassModel.findOne({
+    name: characterClass.name,
+  });
+
+  if (foundCharacterClass) {
+    req.body.characterClass = foundCharacterClass;
+  } else {
+    characterClass.isCustomClass = true;
+  }
   next();
 });

@@ -29,6 +29,11 @@ characterSchema.pre("save", function (next) {
     character.stats.level
   );
 
+  // Go through the skill proficiencies from the characters background and set the characters proficiencies object
+  character.background.skillProficiencies.forEach((skillProficiency) => {
+    character.proficiencies[skillProficiency] = true;
+  });
+
   // calculate passive wisdom
   character.stats.passiveWisdom = 10 + character.stats.abilityModifier.Wisdom;
 
