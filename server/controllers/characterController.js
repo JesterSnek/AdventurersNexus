@@ -1,5 +1,5 @@
 const Character = require("../middleware/characterModelMiddleware");
-const Background = require("../models/backgroundModel");
+const Background = require("../middleware/backgroundModelMiddleware");
 const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
 

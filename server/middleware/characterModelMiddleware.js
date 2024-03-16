@@ -3,44 +3,6 @@ const characterSchema = require("../models/characterModel");
 
 // Middleware
 characterSchema.pre("save", function (next) {
-  const predefinedRaces = [
-    "Dragonborn",
-    "Dwarf",
-    "Elf",
-    "Gnome",
-    "Half-Elf",
-    "Half-Orc",
-    "Halfling",
-    "Human",
-    "Tiefling",
-  ];
-  //sets the race.isCustomRace field to true if the submitted race doesn't contain one of the predefined races above
-  this.race.isCustomRace = !predefinedRaces.includes(this.race.name);
-  next();
-});
-
-characterSchema.pre("save", function (next) {
-  const predefinedClasses = [
-    "Barbarian",
-    "Bard",
-    "Cleric",
-    "Druid",
-    "Fighter",
-    "Monk",
-    "Paladin",
-    "Ranger",
-    "Rogue",
-    "Sorcerer",
-    "Warlock",
-    "Wizard",
-  ];
-  this.characterClass.isCustomClass = !predefinedClasses.includes(
-    this.characterClass.name
-  );
-  next();
-});
-
-characterSchema.pre("save", function (next) {
   const character = this;
 
   // roll dice for ability scores if they are not set
@@ -63,7 +25,9 @@ characterSchema.pre("save", function (next) {
   }
 
   // calculate proficiency bonus
-  character.proficiencyBonus = calculateProficiencyBonus(character.stats.level);
+  character.stats.proficiencyBonus = calculateProficiencyBonus(
+    character.stats.level
+  );
 
   // calculate passive wisdom
   character.stats.passiveWisdom = 10 + character.stats.abilityModifier.Wisdom;

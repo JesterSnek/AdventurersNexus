@@ -9,17 +9,25 @@ const backgroundSchema = new Schema({
   languages: [String],
   skillProficiencies: [String],
   toolProficiencies: [String],
-  // backgroundFeatures: [
-  //   {
-  //     featureName: String,
-  //     featureDescription: String,
-  //   },
-  // ],
+  feature: {
+    name: {
+      type: String,
+      //required: true,
+    },
+    description: {
+      type: String,
+      //required: true,
+    },
+  },
   personalityTraits: String,
   ideals: String,
   bonds: String,
   flaws: String,
+  isCustom: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const Background = mongoose.model("Background", backgroundSchema);
-module.exports = Background;
+//const Background = mongoose.model("Background", backgroundSchema);
+module.exports = backgroundSchema;
