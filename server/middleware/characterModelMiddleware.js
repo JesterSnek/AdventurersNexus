@@ -38,7 +38,7 @@ characterSchema.pre("save", function (next) {
   character.stats.passiveWisdom = 10 + character.stats.abilityModifier.Wisdom;
 
   // add perception proficiency bonus if character has proficiency in perception
-  if (character.proficiencies.perception) {
+  if (character.proficiencies.Perception) {
     character.stats.passiveWisdom += character.stats.proficiencyBonus;
   }
 

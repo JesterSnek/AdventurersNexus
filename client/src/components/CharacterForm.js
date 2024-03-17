@@ -1,30 +1,24 @@
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useCharacterContext } from "../hooks/useCharacterContext";
+import BackgroundSelect from "./BackgroundSelect";
+import { initialCharacterState } from "../utils/initialCharacterState";
 
 const CharacterForm = () => {
   const { dispatch } = useCharacterContext();
   const { user } = useAuthContext();
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
-  const [character, setCharacter] = useState({
-    name: "",
-    characterClass: { name: "" },
-    race: { name: "" },
-    background: {
-      name: "",
-      description: "",
-      language: "",
-    },
-  });
+  const [backgroundOption, setBackgroundOption] = useState("SRD"); // SRD or Custom
+  const [character, setCharacter] = useState(initialCharacterState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user) {
-      setError("You must be logged in for this action.");
-      return;
-    }
+    // if (!user) {
+    //   setError("You must be logged in for this action.");
+    //   return;
+    // }
 
     const response = await fetch("/api/character/createCharacter", {
       method: "POST",
@@ -37,18 +31,7 @@ const CharacterForm = () => {
     const json = await response.json();
 
     console.log("New Character created.", json);
-    setCharacter({
-      ...character,
-      name: "",
-      characterClass: { name: "" },
-      race: { name: "" },
-      background: {
-        ...character.background,
-        name: "",
-        description: "",
-        language: "",
-      },
-    });
+    setCharacter(initialCharacterState);
 
     dispatch({ type: "CREATE_CHARACTER", payload: json.doc });
   };
@@ -68,18 +51,6 @@ const CharacterForm = () => {
             value={character.name}
           />
 
-          <label>Character Class:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                characterClass: { name: e.target.value },
-              })
-            }
-            value={character.characterClass.name}
-          />
-
           <label>Character Race:</label>
           <input
             type="text"
@@ -92,16 +63,23 @@ const CharacterForm = () => {
             value={character.race.name}
           />
 
-          <label>Background:</label>
+          <BackgroundSelect
+            backgroundOption={backgroundOption}
+            setBackgroundOption={setBackgroundOption}
+            setCharacter={setCharacter}
+            character={character}
+          />
+
+          <label>Character Class:</label>
           <input
             type="text"
             onChange={(e) =>
               setCharacter({
                 ...character,
-                background: { name: e.target.value },
+                characterClass: { name: e.target.value },
               })
             }
-            value={character.background.name}
+            value={character.characterClass.name}
           />
 
           <button>Create Character</button>

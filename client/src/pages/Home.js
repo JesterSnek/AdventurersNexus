@@ -11,16 +11,23 @@ const Home = () => {
 
   useEffect(() => {
     const fetchCharacters = async () => {
-      const response = await fetch("/api/character", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const json = await response.json();
+      try {
+        const response = await fetch("/api/character", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        const json = await response.json();
 
-      if (response.ok) {
-        dispatch({ type: "SET_CHARACTER", payload: json.docs });
-        //console.log(json);
+        if (response.ok) {
+          dispatch({ type: "SET_CHARACTER", payload: json.docs });
+          //console.log(json);
+        } else {
+          throw new Error(json.error || "Something went wrong");
+        }
+      } catch (error) {
+        console.error(error);
+        // dispatch({ type: "FETCH_ERROR", payload: error.message });
       }
     };
 
