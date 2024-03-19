@@ -9,10 +9,8 @@ export const initialCharacterState = {
     languages: [],
     skillProficiencies: [],
     toolProficiencies: [],
-    feature: {
-      name: "",
-      description: "",
-    },
+    featureName: "",
+    featureDescription: "",
     personalityTraits: "",
     ideals: "",
     bonds: "",

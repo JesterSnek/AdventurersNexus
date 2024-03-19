@@ -9,16 +9,8 @@ const backgroundSchema = new Schema({
   languages: [String],
   skillProficiencies: [String],
   toolProficiencies: [String],
-  feature: {
-    name: {
-      type: String,
-      //required: true,
-    },
-    description: {
-      type: String,
-      //required: true,
-    },
-  },
+  featureName: String,
+  featureDescription: String,
   personalityTraits: String,
   ideals: String,
   bonds: String,

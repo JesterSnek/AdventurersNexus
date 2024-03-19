@@ -1,6 +1,4 @@
 import React from "react";
-import Select from "react-select";
-import CreatableSelect from "react-select/creatable";
 import { backgroundOptions } from "../constants/backgroundOptions";
 import { skillProficiencies } from "../constants/skillProficiencies";
 import {
@@ -13,6 +11,13 @@ import { initialCharacterState } from "../utils/initialCharacterState";
 import { handleBackgroundChange } from "../utils/handleBackgroundChange";
 import { handleMultipleBackgroundChanges } from "../utils/handleMultipleBackgroundChanges";
 import { getCustomBackgroundToolOptions } from "../utils/getCustomBackgroundToolOptions";
+import {
+  renderSelectComponent,
+  renderCreatableComponent,
+  renderTextInputComponent,
+} from "./formComponents";
+import { languageBackgrounds } from "../constants/languageBackgrounds";
+import { toolBackgrounds } from "../constants/toolBackgrounds";
 
 function BackgroundSelect({
   backgroundOption,
@@ -20,26 +25,9 @@ function BackgroundSelect({
   setCharacter,
   character,
 }) {
-  const [isSpecialBackground, setIsSpecialBackground] = React.useState(false);
-  // Backgrounds from the SRD that give their character extra languages
-  const languageBackgrounds = [
-    "Acolyte",
-    "Guild Artisan",
-    "Hermit",
-    "Noble",
-    "Outlander",
-    "Sage",
-  ];
-  // Backgrounds from the SRD that lets users choose a tool proficiency
-  const toolBackgrounds = [
-    "Criminal",
-    "Noble",
-    "Outlander",
-    "Entertainer",
-    "Folk Hero",
-    "Guild Artisan",
-    "Soldier",
-  ];
+  const [isEquipmentBackground, setisEquipmentBackground] =
+    React.useState(false);
+
   const isExtraToolBackground = toolBackgrounds.includes(
     character.background.name
   );
@@ -49,63 +37,6 @@ function BackgroundSelect({
   )
     ? 2
     : 1;
-
-  const renderSelectComponent = (
-    label,
-    value,
-    options,
-    handleChange,
-    properties,
-    isMulti = true,
-    maxOptions = Infinity
-  ) => {
-    return (
-      <>
-        <label>{label}:</label>
-        <Select
-          isMulti={isMulti}
-          options={options}
-          onChange={(selectedOptions) => {
-            if (isMulti && selectedOptions.length > maxOptions) {
-              return;
-            }
-            handleChange(character, setCharacter, selectedOptions, properties);
-          }}
-          value={value.map((item) => ({
-            value: item,
-            label: item,
-          }))}
-        />
-      </>
-    );
-  };
-
-  const renderTextInputComponent = (
-    label,
-    value,
-    field,
-    setCharacter,
-    character
-  ) => {
-    return (
-      <>
-        <label>{label}:</label>
-        <input
-          type="text"
-          onChange={(e) =>
-            setCharacter({
-              ...character,
-              background: {
-                ...character.background,
-                [field]: e.target.value,
-              },
-            })
-          }
-          value={value}
-        />
-      </>
-    );
-  };
 
   return (
     <>
@@ -137,19 +68,21 @@ function BackgroundSelect({
             setCharacter({
               ...character,
               background: {
-                // initialCharacterState.background clears the background fields every time the user switches to a different predefined background
-                ...initialCharacterState.background,
+                // clear the needed background fields every time the user switches to a different predefined background
                 name: e.target.value,
+                equipment: [],
+                languages: [],
+                toolProficiencies: [],
               },
             });
-            const isSpecialBackground = [
+            const isEquipmentBackground = [
               "Entertainer",
               "Folk Hero",
               "Guild Artisan",
               "Soldier",
             ].includes(selectedBackground);
             // Store the boolean value in the state so that it can be used later
-            setIsSpecialBackground(isSpecialBackground);
+            setisEquipmentBackground(isEquipmentBackground);
           }}
         >
           <option value="">Select a background</option>
@@ -162,28 +95,11 @@ function BackgroundSelect({
       )}
 
       {/* Render this if the user decides to choose a predefined background with extra languages */}
-      {/* {languageBackgrounds.includes(character.background.name) && (
-        <>
-          <label>
-            {" "}
-            Languages: (Pick {isExtraLanguageBackground ? "2" : "1"})
-          </label>
-          <Select
-            isMulti
-            options={languages}
-            onChange={handleSelectChange}
-            value={character.background.languages.map((skill) => ({
-              value: skill,
-              label: skill,
-            }))}
-          />
-        </>
-      )} */}
-
-      {/* Render this if the user decides to choose a predefined background with extra languages */}
       {languageBackgrounds.includes(character.background.name) && (
         <>
           {renderSelectComponent(
+            character,
+            setCharacter,
             "Languages",
             character.background.languages,
             languages,
@@ -198,11 +114,13 @@ function BackgroundSelect({
       {isExtraToolBackground && (
         <>
           {renderSelectComponent(
+            character,
+            setCharacter,
             "Tool Proficiencies",
             character.background.toolProficiencies,
             getCustomBackgroundToolOptions(character.background.name),
             handleMultipleBackgroundChanges,
-            isSpecialBackground
+            isEquipmentBackground
               ? ["toolProficiencies", "equipment"]
               : ["toolProficiencies"],
             false
@@ -228,166 +146,87 @@ function BackgroundSelect({
             setCharacter,
             character
           )}
-
-          <label>Equipment:</label>
-          <textarea
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  equipment: e.target.value.split(","),
-                },
-              })
-            }
-            value={character.background.equipment.join(",")}
-          />
-
-          <label>Languages:</label>
-          <textarea
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  languages: e.target.value.split(","),
-                },
-              })
-            }
-            value={character.background.languages.join(",")}
-          />
-
-          <label>Skill Proficiencies:</label>
-          <Select
-            isMulti
-            options={skillProficiencies}
-            onChange={(selectedOptions) =>
-              handleBackgroundChange(
-                character,
-                setCharacter,
-                selectedOptions,
-                "skillProficiencies"
-              )
-            }
-            value={character.background.skillProficiencies.map((skill) => ({
-              value: skill,
-              label: skill,
-            }))}
-          />
-
-          <label>Tool Proficiencies:</label>
-          <CreatableSelect
-            isMulti
-            options={[...artisanTools, ...musicalInstruments, ...gamingSets]}
-            onChange={(selectedOptions) =>
-              handleBackgroundChange(
-                character,
-                setCharacter,
-                selectedOptions,
-                "toolProficiencies"
-              )
-            }
-            value={character.background.toolProficiencies.map((tool) => ({
-              value: tool,
-              label: tool,
-            }))}
-          />
-
-          <label>Feature Name:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  feature: {
-                    ...character.background.feature,
-                    name: e.target.value,
-                  },
-                },
-              })
-            }
-            value={character.background.feature.name}
-          />
-
-          <label>Feature Description:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  feature: {
-                    ...character.background.feature,
-                    description: e.target.value,
-                  },
-                },
-              })
-            }
-            value={character.background.feature.description}
-          />
-
-          <label>Personality Traits:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  personalityTraits: e.target.value,
-                },
-              })
-            }
-            value={character.background.personalityTraits}
-          />
-
-          <label>Ideals:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  ideals: e.target.value,
-                },
-              })
-            }
-            value={character.background.ideals}
-          />
-
-          <label>Bonds:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  bonds: e.target.value,
-                },
-              })
-            }
-            value={character.background.bonds}
-          />
-
-          <label>Flaws:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                background: {
-                  ...character.background,
-                  flaws: e.target.value,
-                },
-              })
-            }
-            value={character.background.flaws}
-          />
+          {renderCreatableComponent(
+            character,
+            setCharacter,
+            "Equipment: ",
+            character.background.equipment,
+            handleBackgroundChange,
+            ["equipment"],
+            true
+          )}
+          {renderCreatableComponent(
+            character,
+            setCharacter,
+            "Languages: ",
+            character.background.languages,
+            handleBackgroundChange,
+            ["languages"],
+            true
+          )}
+          {renderSelectComponent(
+            character,
+            setCharacter,
+            "Skill Proficiencies: ",
+            character.background.skillProficiencies,
+            skillProficiencies,
+            handleBackgroundChange,
+            "skillProficiencies",
+            true
+          )}
+          {renderCreatableComponent(
+            character,
+            setCharacter,
+            "Tool Proficiencies: ",
+            character.background.toolProficiencies,
+            handleBackgroundChange,
+            ["toolProficiencies"],
+            true,
+            Infinity,
+            [...artisanTools, ...musicalInstruments, ...gamingSets]
+          )}
+          {renderTextInputComponent(
+            "Feature Name: ",
+            character.background.featureName,
+            "featureName",
+            setCharacter,
+            character
+          )}
+          {renderTextInputComponent(
+            "Feature Description: ",
+            character.background.featureDescription,
+            "featureDescription",
+            setCharacter,
+            character
+          )}
+          {renderTextInputComponent(
+            "Personality Traits: ",
+            character.background.personalityTraits,
+            "personalityTraits",
+            setCharacter,
+            character
+          )}
+          {renderTextInputComponent(
+            "Ideals: ",
+            character.background.ideals,
+            "ideals",
+            setCharacter,
+            character
+          )}{" "}
+          {renderTextInputComponent(
+            "Bonds: ",
+            character.background.bonds,
+            "bonds",
+            setCharacter,
+            character
+          )}{" "}
+          {renderTextInputComponent(
+            "Flaws: ",
+            character.background.flaws,
+            "flaws",
+            setCharacter,
+            character
+          )}
         </>
       )}
     </>
