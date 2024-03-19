@@ -4,6 +4,7 @@ const Race = require("../middleware/raceModelMiddleware");
 const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
 const CharacterClassModel = require("../middleware/classModelMiddleware");
+const mergeObjects = require("../utils/mergeObjects");
 
 exports.createCharacter = factory.createOne(Character);
 exports.getCharacter = factory.getOne(Character);
@@ -17,15 +18,13 @@ exports.setUserId = (req, res, next) => {
 
 exports.detectBackgroundType = catchAsync(async (req, res, next) => {
   const { background } = req.body;
-
   const foundBackground = await Background.findOne({ name: background.name });
 
   if (foundBackground) {
-    req.body.background = foundBackground;
+    req.body.background = mergeObjects(foundBackground._doc, background);
   } else {
     background.isCustom = true;
   }
-  // Add language logic later
   next();
 });
 
