@@ -3,7 +3,7 @@ const Background = require("../middleware/backgroundModelMiddleware");
 const Race = require("../middleware/raceModelMiddleware");
 const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
-const CharacterClassModel = require("../middleware/classModelMiddleware");
+const CharacterClassModel = require("../middleware/characterClassModelMiddleware");
 const mergeObjects = require("../utils/mergeObjects");
 
 exports.createCharacter = factory.createOne(Character);
@@ -49,7 +49,10 @@ exports.detectCharacterClassType = catchAsync(async (req, res, next) => {
   });
 
   if (foundCharacterClass) {
-    req.body.characterClass = foundCharacterClass;
+    req.body.characterClass = mergeObjects(
+      foundCharacterClass._doc,
+      characterClass
+    );
   } else {
     characterClass.isCustomClass = true;
   }

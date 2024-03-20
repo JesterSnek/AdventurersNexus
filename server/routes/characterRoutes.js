@@ -5,10 +5,10 @@ const requireAuth = require("../middleware/requireAuth");
 const router = express.Router();
 
 //Auth required for below routes
-//router.use(requireAuth);
+router.use(requireAuth);
+
 router.post(
   "/createCharacter",
-  requireAuth,
   characterController.setUserId,
   characterController.detectBackgroundType,
   characterController.detectRaceType,
@@ -17,6 +17,6 @@ router.post(
 );
 //router.get("/getCharacter/:id", characterController.getCharacter);
 
-router.get("/", requireAuth, characterController.getAllCharacters);
+router.get("/", characterController.getAllCharacters);
 
 module.exports = router;

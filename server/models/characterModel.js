@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { generateProficienciesSchema } = require("./schemaUtils");
 const backgroundSchema = require("./backgroundModel");
-const classSchema = require("./classModel");
+const classSchema = require("./characterClassModel");
 const raceSchema = require("./raceModel");
 
 const Schema = mongoose.Schema;
