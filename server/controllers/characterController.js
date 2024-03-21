@@ -3,7 +3,7 @@ const Background = require("../middleware/backgroundModelMiddleware");
 const Race = require("../middleware/raceModelMiddleware");
 const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
-const CharacterClassModel = require("../middleware/characterClassModelMiddleware");
+const CharacterClass = require("../middleware/characterClassModelMiddleware");
 const mergeObjects = require("../utils/mergeObjects");
 
 exports.createCharacter = factory.createOne(Character);
@@ -44,7 +44,7 @@ exports.detectRaceType = catchAsync(async (req, res, next) => {
 exports.detectCharacterClassType = catchAsync(async (req, res, next) => {
   const { characterClass } = req.body;
 
-  const foundCharacterClass = await CharacterClassModel.findOne({
+  const foundCharacterClass = await CharacterClass.findOne({
     name: characterClass.name,
   });
 
@@ -54,7 +54,7 @@ exports.detectCharacterClassType = catchAsync(async (req, res, next) => {
       characterClass
     );
   } else {
-    characterClass.isCustomClass = true;
+    characterClass.isCustom = true;
   }
   next();
 });

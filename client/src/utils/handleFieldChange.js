@@ -1,8 +1,9 @@
-export function handleBackgroundChange(
+export function handleFieldChange(
   character,
   setCharacter,
   selectedOptions,
-  fieldName
+  fieldName,
+  dbFieldName
 ) {
   // Ensure selectedOptions is always an array
   // Otherwise react-select will cause an error if "isMulti" is false
@@ -12,8 +13,8 @@ export function handleBackgroundChange(
 
   setCharacter({
     ...character,
-    background: {
-      ...character.background,
+    [dbFieldName]: {
+      ...character[dbFieldName],
       [fieldName]: options.map((option) => option.value),
     },
   });

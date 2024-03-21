@@ -1,6 +1,26 @@
 export const initialCharacterState = {
   name: "",
-  characterClass: { name: "" },
+  characterClass: {
+    name: "",
+    description: "",
+    hitDice: "",
+    primaryAbility: [],
+    savingThrowProficiencies: [],
+    armorProficiencies: [],
+    weaponProficiencies: [],
+    toolProficiencies: [],
+    skillProficiencies: [],
+    startingEquipment: [],
+    classFeatures: [],
+    subclasses: [],
+    spellcasting: {
+      spellcastingAbility: "",
+      cantripsKnown: [],
+      spellsKnown: [],
+      spellSlots: [],
+      spellList: [],
+    },
+  },
   race: { name: "" },
   background: {
     name: "",

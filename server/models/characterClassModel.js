@@ -8,7 +8,7 @@ const characterClassSchema = new Schema({
   description: String,
   hitDice: String,
   primaryAbility: {
-    type: String,
+    type: [String],
     enum: [
       "Strength",
       "Dexterity",

@@ -10,6 +10,7 @@ export const renderSelectComponent = (
   options,
   handleChange,
   properties,
+  dbFieldName,
   isMulti = true,
   maxOptions = Infinity
 ) => {
@@ -23,7 +24,13 @@ export const renderSelectComponent = (
           if (isMulti && selectedOptions.length > maxOptions) {
             return;
           }
-          handleChange(character, setCharacter, selectedOptions, properties);
+          handleChange(
+            character,
+            setCharacter,
+            selectedOptions,
+            properties,
+            dbFieldName
+          );
         }}
         value={value.map((item) => ({
           value: item,
@@ -40,6 +47,7 @@ export const renderCreatableComponent = (
   value,
   handleChange,
   properties,
+  dbFieldName,
   isMulti = true,
   maxOptions = Infinity,
   options = []
@@ -54,7 +62,13 @@ export const renderCreatableComponent = (
           if (isMulti && selectedOptions.length > maxOptions) {
             return;
           }
-          handleChange(character, setCharacter, selectedOptions, properties);
+          handleChange(
+            character,
+            setCharacter,
+            selectedOptions,
+            properties,
+            dbFieldName
+          );
         }}
         value={value.map((item) => ({
           value: item,
@@ -67,10 +81,10 @@ export const renderCreatableComponent = (
 
 export const renderTextInputComponent = (
   label,
-  value,
+  dbFieldName,
   field,
-  setCharacter,
-  character
+  character,
+  setCharacter
 ) => {
   return (
     <>
@@ -80,13 +94,13 @@ export const renderTextInputComponent = (
         onChange={(e) =>
           setCharacter({
             ...character,
-            background: {
-              ...character.background,
+            [dbFieldName]: {
+              ...character[dbFieldName],
               [field]: e.target.value,
             },
           })
         }
-        value={value}
+        value={character[dbFieldName][field]}
       />
     </>
   );

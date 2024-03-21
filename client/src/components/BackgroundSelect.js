@@ -8,7 +8,7 @@ import {
 } from "../constants/toolProficiencies";
 import { languages } from "../constants/languages";
 import { initialCharacterState } from "../utils/initialCharacterState";
-import { handleBackgroundChange } from "../utils/handleBackgroundChange";
+import { handleFieldChange } from "../utils/handleFieldChange";
 import { handleMultipleBackgroundChanges } from "../utils/handleMultipleBackgroundChanges";
 import { getCustomBackgroundToolOptions } from "../utils/getCustomBackgroundToolOptions";
 import {
@@ -103,8 +103,9 @@ function BackgroundSelect({
             "Languages",
             character.background.languages,
             languages,
-            handleBackgroundChange,
+            handleFieldChange,
             ["languages"],
+            "background",
             true,
             maxLanguageOptions
           )}
@@ -123,6 +124,7 @@ function BackgroundSelect({
             isEquipmentBackground
               ? ["toolProficiencies", "equipment"]
               : ["toolProficiencies"],
+            "background",
             false
           )}
         </>
@@ -134,25 +136,26 @@ function BackgroundSelect({
         <>
           {renderTextInputComponent(
             "Custom Background Name",
-            character.background.name,
+            "background",
             "name",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
           {renderTextInputComponent(
             "Background Description",
-            character.background.description,
+            "background",
             "description",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
           {renderCreatableComponent(
             character,
             setCharacter,
             "Equipment: ",
             character.background.equipment,
-            handleBackgroundChange,
+            handleFieldChange,
             ["equipment"],
+            "background",
             true
           )}
           {renderCreatableComponent(
@@ -160,8 +163,9 @@ function BackgroundSelect({
             setCharacter,
             "Languages: ",
             character.background.languages,
-            handleBackgroundChange,
+            handleFieldChange,
             ["languages"],
+            "background",
             true
           )}
           {renderSelectComponent(
@@ -170,8 +174,9 @@ function BackgroundSelect({
             "Skill Proficiencies: ",
             character.background.skillProficiencies,
             skillProficiencies,
-            handleBackgroundChange,
+            handleFieldChange,
             "skillProficiencies",
+            "background",
             true
           )}
           {renderCreatableComponent(
@@ -179,53 +184,54 @@ function BackgroundSelect({
             setCharacter,
             "Tool Proficiencies: ",
             character.background.toolProficiencies,
-            handleBackgroundChange,
+            handleFieldChange,
             ["toolProficiencies"],
+            "background",
             true,
             Infinity,
             [...artisanTools, ...musicalInstruments, ...gamingSets]
           )}
           {renderTextInputComponent(
             "Feature Name: ",
-            character.background.featureName,
+            "background",
             "featureName",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
           {renderTextInputComponent(
             "Feature Description: ",
-            character.background.featureDescription,
+            "background",
             "featureDescription",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
           {renderTextInputComponent(
             "Personality Traits: ",
-            character.background.personalityTraits,
+            "background",
             "personalityTraits",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
           {renderTextInputComponent(
             "Ideals: ",
-            character.background.ideals,
+            "background",
             "ideals",
-            setCharacter,
-            character
-          )}{" "}
+            character,
+            setCharacter
+          )}
           {renderTextInputComponent(
             "Bonds: ",
-            character.background.bonds,
+            "background",
             "bonds",
-            setCharacter,
-            character
-          )}{" "}
+            character,
+            setCharacter
+          )}
           {renderTextInputComponent(
             "Flaws: ",
-            character.background.flaws,
+            "background",
             "flaws",
-            setCharacter,
-            character
+            character,
+            setCharacter
           )}
         </>
       )}

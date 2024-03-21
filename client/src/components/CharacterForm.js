@@ -3,6 +3,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useCharacterContext } from "../hooks/useCharacterContext";
 import BackgroundSelect from "./BackgroundSelect";
 import { initialCharacterState } from "../utils/initialCharacterState";
+import CharacterClassInput from "./CharacterClassSelect";
 
 const CharacterForm = () => {
   const { dispatch } = useCharacterContext();
@@ -70,16 +71,9 @@ const CharacterForm = () => {
             character={character}
           />
 
-          <label>Character Class:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                characterClass: { name: e.target.value },
-              })
-            }
-            value={character.characterClass.name}
+          <CharacterClassInput
+            character={character}
+            setCharacter={setCharacter}
           />
 
           <button>Create Character</button>
