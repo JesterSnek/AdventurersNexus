@@ -3,10 +3,18 @@ import { useState } from "react";
 
 import { initialCharacterState } from "../utils/initialCharacterState";
 import { characterClassOptions } from "../constants/characterClassOptions";
-import { renderTextInputComponent } from "./formComponents";
+import {
+  renderTextInputComponent,
+  renderSelectComponent,
+} from "./formComponents";
+import { handleFieldChange } from "../utils/handleFieldChange";
 
 const CharacterClassSelect = ({ character, setCharacter }) => {
   const [characterClassOption, setCharacterClassOption] = useState("SRD"); // SRD or Custom
+  const fighterAbilityOptions = [
+    { value: "Strength", label: "Strength" },
+    { value: "Dexterity", label: "Dexterity" },
+  ];
 
   return (
     <>
@@ -36,7 +44,7 @@ const CharacterClassSelect = ({ character, setCharacter }) => {
             setCharacter({
               ...character,
               // **** The characterClass object is being updated here ****
-              characterClass: { name: e.target.value },
+              characterClass: { name: e.target.value, primaryAbility: [] },
             });
           }}
         >
@@ -47,6 +55,23 @@ const CharacterClassSelect = ({ character, setCharacter }) => {
             </option>
           ))}
         </select>
+      )}
+
+      {/* Render this if the user decides to choose the SRD Fighter class */}
+      {character.characterClass.name === "Fighter" && (
+        <>
+          {renderSelectComponent(
+            character,
+            setCharacter,
+            "Choose between Strength or Dexterity for your Fighter's primary ability score: ",
+            character.characterClass.primaryAbility,
+            fighterAbilityOptions,
+            handleFieldChange,
+            "primaryAbility",
+            "characterClass",
+            false
+          )}
+        </>
       )}
 
       {/* Render this if the user decides to choose a custom character class */}

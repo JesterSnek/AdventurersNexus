@@ -12,7 +12,8 @@ export const renderSelectComponent = (
   properties,
   dbFieldName,
   isMulti = true,
-  maxOptions = Infinity
+  maxOptions = Infinity,
+  path = []
 ) => {
   return (
     <>
@@ -29,7 +30,8 @@ export const renderSelectComponent = (
             setCharacter,
             selectedOptions,
             properties,
-            dbFieldName
+            dbFieldName,
+            path
           );
         }}
         value={value.map((item) => ({
@@ -50,7 +52,8 @@ export const renderCreatableComponent = (
   dbFieldName,
   isMulti = true,
   maxOptions = Infinity,
-  options = []
+  options = [],
+  path = []
 ) => {
   return (
     <>
@@ -67,7 +70,8 @@ export const renderCreatableComponent = (
             setCharacter,
             selectedOptions,
             properties,
-            dbFieldName
+            dbFieldName,
+            path
           );
         }}
         value={value.map((item) => ({
