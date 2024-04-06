@@ -1,4 +1,4 @@
-const languageNames = [
+export const languages = [
   "Common",
   "Dwarvish",
   "Elvish",
@@ -7,9 +7,7 @@ const languageNames = [
   "Goblin",
   "Halfling",
   "Orc",
-];
-
-export const languages = languageNames.map((name) => ({
+].map((name) => ({
   value: name,
   label: name,
 }));

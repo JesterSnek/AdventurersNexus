@@ -33,7 +33,11 @@ const characterClassSchema = new Schema({
   weaponProficiencies: [String],
   toolProficiencies: [String],
   skillProficiencies: [String],
-  startingEquipment: [String],
+  startingEquipment: [
+    {
+      equipment: [String],
+    },
+  ],
   classFeatures: [
     {
       level: Number,

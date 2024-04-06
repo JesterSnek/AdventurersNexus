@@ -15,6 +15,8 @@ export const renderSelectComponent = (
   maxOptions = Infinity,
   path = []
 ) => {
+  const valueArray = Array.isArray(value) ? value : [value];
+
   return (
     <>
       <label>{label}:</label>
@@ -31,10 +33,11 @@ export const renderSelectComponent = (
             selectedOptions,
             properties,
             dbFieldName,
+            isMulti,
             path
           );
         }}
-        value={value.map((item) => ({
+        value={valueArray.map((item) => ({
           value: item,
           label: item,
         }))}
