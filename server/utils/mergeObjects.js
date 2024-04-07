@@ -17,9 +17,11 @@ function mergeArrays(predefined, user) {
 }
 
 function mergeObjects(predefined, user) {
-  const result = { ...predefined };
+  const result = {};
 
-  for (const key in user) {
+  const keys = new Set([...Object.keys(predefined), ...Object.keys(user)]);
+
+  for (const key of keys) {
     if (Array.isArray(user[key]) && Array.isArray(predefined[key])) {
       result[key] = mergeArrays(predefined[key], user[key]);
     } else if (
@@ -30,7 +32,11 @@ function mergeObjects(predefined, user) {
       // Merge nested objects
       result[key] = mergeObjects(predefined[key], user[key]);
     } else {
-      result[key] = user[key];
+      // If user[key] is not undefined and not an empty string, use it; otherwise, keep the predefined value
+      result[key] =
+        user[key] !== undefined && user[key] !== ""
+          ? user[key]
+          : predefined[key];
     }
   }
 
