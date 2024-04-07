@@ -1,6 +1,11 @@
 import React from "react";
 
-export function EquipmentRadio({ equipment, character, setCharacter }) {
+export function EquipmentRadio({
+  equipment,
+  character,
+  setCharacter,
+  equipmentIndex,
+}) {
   // Ensure equipment is an array
   const equipmentArray = Array.isArray(equipment) ? equipment : [equipment];
 
@@ -10,14 +15,15 @@ export function EquipmentRadio({ equipment, character, setCharacter }) {
         type="radio"
         value={equipmentArray[0]}
         checked={equipmentArray.every((item) =>
-          character.characterClass.startingEquipment[0]?.equipment?.includes(
-            item
-          )
+          character.characterClass.startingEquipment[
+            equipmentIndex
+          ]?.equipment?.includes(item)
         )}
         onChange={() => {
           const newCharacter = { ...character };
-          newCharacter.characterClass.startingEquipment[0].equipment =
-            equipmentArray;
+          newCharacter.characterClass.startingEquipment[
+            equipmentIndex
+          ].equipment = equipmentArray;
           setCharacter(newCharacter);
         }}
       />
