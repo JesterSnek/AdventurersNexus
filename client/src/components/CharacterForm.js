@@ -4,6 +4,7 @@ import { useCharacterContext } from "../hooks/useCharacterContext";
 import BackgroundSelect from "./BackgroundSelect";
 import { initialCharacterState } from "../utils/initialCharacterState";
 import CharacterClassInput from "./CharacterClassSelect";
+import RaceSelect from "./RaceSelect";
 
 const CharacterForm = () => {
   const { dispatch } = useCharacterContext();
@@ -52,17 +53,7 @@ const CharacterForm = () => {
             value={character.name}
           />
 
-          <label>Character Race:</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setCharacter({
-                ...character,
-                race: { name: e.target.value },
-              })
-            }
-            value={character.race.name}
-          />
+          <RaceSelect character={character} setCharacter={setCharacter} />
 
           <BackgroundSelect
             backgroundOption={backgroundOption}

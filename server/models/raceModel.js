@@ -18,6 +18,7 @@ const raceSchema = new Schema({
     lifespan: Number,
   },
   size: {
+    description: String,
     category: String,
     height_range: String,
     weight_range: String,
@@ -41,7 +42,8 @@ const raceSchema = new Schema({
   subraces: [
     {
       name: String,
-      ability_score_increase: {
+      description: String,
+      raceAbilityScoreIncreases: {
         Strength: Number,
         Dexterity: Number,
         Constitution: Number,
